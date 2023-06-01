@@ -1,7 +1,6 @@
 package ch.bbzbl.time.views;
 
-import ch.bbzbl.time.components.appnav.AppNav;
-import ch.bbzbl.time.components.appnav.AppNavItem;
+import ch.bbzbl.time.navigation.NavigationMenu;
 import ch.bbzbl.time.data.entity.User;
 import ch.bbzbl.time.security.AuthenticatedUser;
 import ch.bbzbl.time.views.home.HomeView;
@@ -66,17 +65,17 @@ public class MainLayout extends AppLayout {
         addToDrawer(header, scroller, createFooter());
     }
 
-    private AppNav createNavigation() {
+    private NavigationMenu createNavigation() {
         // AppNav is not yet an official component.
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
-        AppNav nav = new AppNav();
+        NavigationMenu nav = new NavigationMenu();
 
         if (accessChecker.hasAccess(HomeView.class)) {
-            nav.addItem(new AppNavItem("Home", HomeView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
+            nav.addItem(new NavigationMenu("Home", HomeView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(ListView.class)) {
-            nav.addItem(new AppNavItem("List", ListView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
+            nav.addItem(new NavigationMenu("List", ListView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
 
         }
 

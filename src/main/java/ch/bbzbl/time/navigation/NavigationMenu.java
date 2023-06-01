@@ -1,4 +1,4 @@
-package ch.bbzbl.time.components.appnav;
+package ch.bbzbl.time.navigation;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
@@ -8,16 +8,17 @@ import com.vaadin.flow.internal.StateTree;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.Router;
 import com.vaadin.flow.server.VaadinService;
+
 import java.util.Optional;
 
 /**
- * A menu item for the {@link AppNav} component.
+ * A menu item for the {@link NavigationItem} component.
  * <p>
  * Can contain a label and/or an icon and links to a given {@code path}.
  */
 @JsModule("@vaadin-component-factory/vcf-nav")
 @Tag("vcf-nav-item")
-public class AppNavItem extends Component {
+public class NavigationMenu extends Component {
 
     /**
      * Creates a menu item which does not link to any view but only shows the given
@@ -26,7 +27,7 @@ public class AppNavItem extends Component {
      * @param label
      *            the label for the item
      */
-    public AppNavItem(String label) {
+    public NavigationMenu(String label) {
         setLabel(label);
     }
 
@@ -38,7 +39,7 @@ public class AppNavItem extends Component {
      * @param path
      *            the path to link to
      */
-    public AppNavItem(String label, String path) {
+    public NavigationMenu(String label, String path) {
         setPath(path);
         setLabel(label);
     }
@@ -51,7 +52,7 @@ public class AppNavItem extends Component {
      * @param view
      *            the view to link to
      */
-    public AppNavItem(String label, Class<? extends Component> view) {
+    public NavigationMenu(String label, Class<? extends Component> view) {
         setPath(view);
         setLabel(label);
     }
@@ -67,7 +68,7 @@ public class AppNavItem extends Component {
      * @param icon
      *            the icon for the item
      */
-    public AppNavItem(String label, String path, Component icon) {
+    public NavigationMenu(String label, String path, Component icon) {
         setPath(path);
         setLabel(label);
         setIcon(icon);
@@ -83,23 +84,27 @@ public class AppNavItem extends Component {
      * @param icon
      *            the icon for the item
      */
-    public AppNavItem(String label, Class<? extends Component> view, Component icon) {
+    public NavigationMenu(String label, Class<? extends Component> view, Component icon) {
         setPath(view);
         setLabel(label);
         setIcon(icon);
     }
 
+    public NavigationMenu() {
+
+    }
+
     /**
      * Adds menu item(s) inside this item, creating a hierarchy.
      * 
-     * @param appNavItems
+     * @param navigationMenus
      *            the menu item(s) to add
      * @return this item for chaining
      */
-    public AppNavItem addItem(AppNavItem... appNavItems) {
-        for (AppNavItem appNavItem : appNavItems) {
-            appNavItem.getElement().setAttribute("slot", "children");
-            getElement().appendChild(appNavItem.getElement());
+    public NavigationMenu addItem(NavigationMenu... navigationMenus) {
+        for (NavigationMenu navigationMenu : navigationMenus) {
+            navigationMenu.getElement().setAttribute("slot", "children");
+            getElement().appendChild(navigationMenu.getElement());
         }
 
         return this;
@@ -110,14 +115,14 @@ public class AppNavItem extends Component {
      * <p>
      * If the given menu item is not a child of this menu item, does nothing.
      * 
-     * @param appNavItem
+     * @param navigationMenu
      *            the menu item to remove
      * @return this item for chaining
      */
-    public AppNavItem removeItem(AppNavItem appNavItem) {
-        Optional<Component> parent = appNavItem.getParent();
+    public NavigationMenu removeItem(NavigationMenu navigationMenu) {
+        Optional<Component> parent = navigationMenu.getParent();
         if (parent.isPresent() && parent.get() == this) {
-            getElement().removeChild(appNavItem.getElement());
+            getElement().removeChild(navigationMenu.getElement());
         }
 
         return this;
@@ -128,7 +133,7 @@ public class AppNavItem extends Component {
      * 
      * @return this item for chaining
      */
-    public AppNavItem removeAllItems() {
+    public NavigationMenu removeAllItems() {
         getElement().removeAllChildren();
         return this;
     }
@@ -151,7 +156,7 @@ public class AppNavItem extends Component {
      *            the label to set
      * @return this instance for chaining
      */
-    public AppNavItem setLabel(String label) {
+    public NavigationMenu setLabel(String label) {
         getLabelElement().setText(label);
         return this;
     }
@@ -175,7 +180,7 @@ public class AppNavItem extends Component {
      *            the path to link to
      * @return this instance for chaining
      */
-    public AppNavItem setPath(String path) {
+    public NavigationMenu setPath(String path) {
         getElement().setAttribute("path", path);
         return this;
     }
@@ -187,7 +192,7 @@ public class AppNavItem extends Component {
      *            the view to link to
      * @return this instance for chaining
      */
-    public AppNavItem setPath(Class<? extends Component> view) {
+    public NavigationMenu setPath(Class<? extends Component> view) {
         String url = RouteConfiguration.forRegistry(getRouter().getRegistry()).getUrl(view);
         setPath(url);
         return this;
@@ -231,7 +236,7 @@ public class AppNavItem extends Component {
      *            the icon to show
      * @return this instance for chaining
      */
-    public AppNavItem setIcon(Component icon) {
+    public NavigationMenu setIcon(Component icon) {
         icon.getElement().setAttribute("slot", "prefix");
         int iconElementIndex = getIconElementIndex();
         if (iconElementIndex != -1) {
@@ -248,7 +253,7 @@ public class AppNavItem extends Component {
      * @param value
      *            true to expand the item, false to collapse it
      */
-    public AppNavItem setExpanded(boolean value) {
+    public NavigationMenu setExpanded(boolean value) {
         if (value) {
             getElement().setAttribute("expanded", "");
         } else {

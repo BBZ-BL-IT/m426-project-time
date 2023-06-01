@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * The entry point of the Spring Boot application.
  *
- * Use the @PWA annotation make the application installable on phones, tablets
- * and some desktop browsers.
+ * Use the @PWA annotation to make the application installable on phones, tablets, and some desktop browsers.
  *
  */
 @SpringBootApplication
@@ -25,10 +24,14 @@ public class Application implements AppShellConfigurator {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * Initializes the database script for the data source.
+     *
+     * This bean ensures that the database is only initialized when it is empty.
+     */
     @Bean
     SqlDataSourceScriptDatabaseInitializer dataSourceScriptDatabaseInitializer(DataSource dataSource,
-            SqlInitializationProperties properties, SamplePersonRepository repository) {
-        // This bean ensures the database is only initialized when empty
+                                                                               SqlInitializationProperties properties, SamplePersonRepository repository) {
         return new SqlDataSourceScriptDatabaseInitializer(dataSource, properties) {
             @Override
             public boolean initializeDatabase() {

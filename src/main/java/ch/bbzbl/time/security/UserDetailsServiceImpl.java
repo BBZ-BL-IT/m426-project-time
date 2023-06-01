@@ -2,8 +2,6 @@ package ch.bbzbl.time.security;
 
 import ch.bbzbl.time.data.entity.User;
 import ch.bbzbl.time.data.service.UserRepository;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +9,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Service for loading user details for authentication.
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -34,7 +38,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static List<GrantedAuthority> getAuthorities(User user) {
         return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
-
     }
 
 }
