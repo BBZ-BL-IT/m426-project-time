@@ -4,7 +4,6 @@ import ch.bbzbl.time.navigation.NavigationMenu;
 import ch.bbzbl.time.data.entity.User;
 import ch.bbzbl.time.security.AuthenticatedUser;
 import ch.bbzbl.time.views.home.HomeView;
-import ch.bbzbl.time.views.list.ListView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -74,11 +73,6 @@ public class MainLayout extends AppLayout {
             nav.addItem(new NavigationMenu("Home", HomeView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
 
         }
-        if (accessChecker.hasAccess(ListView.class)) {
-            nav.addItem(new NavigationMenu("List", ListView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
-
-        }
-
         return nav;
     }
 

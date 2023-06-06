@@ -2,6 +2,7 @@ package ch.bbzbl.time.views.home;
 
 import ch.bbzbl.time.model.TimeEntry;
 import ch.bbzbl.time.views.MainLayout;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
@@ -12,10 +13,14 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.security.PermitAll;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * View for the home page.
@@ -32,6 +37,8 @@ public class HomeView extends VerticalLayout {
     private Grid<TimeEntry> timeEntryGrid;
     private List<TimeEntry> timeEntries;
     private Label remainingHoursLabel;
+
+    private ScheduledExecutorService executorService;
 
     /**
      * Constructs a new HomeView.
@@ -100,18 +107,22 @@ public class HomeView extends VerticalLayout {
             Notification notification = new Notification("Clocked in at: " + formattedDateTime);
             notification.open();
             notification.setPosition(Notification.Position.TOP_CENTER);
-            notification.setDuration(10000); // Set duration to 10 seconds
+            notification.setDuration(5000); // Set duration to 5 seconds
 
             updateButtonStates();
             timeEntryGrid.getDataProvider().refreshAll();
-            displayRemainingWorkTime();
+
+            displayRemainingWorkTime(); // Update remaining work time display
+
+            startUpdateTask(); // Start the task to update remaining time
         } else {
             Notification notification = new Notification("Invalid time entry!");
             notification.open();
             notification.setPosition(Notification.Position.TOP_CENTER);
-            notification.setDuration(10000); // Set duration to 10 seconds
+            notification.setDuration(5000); // Set duration to 5 seconds
         }
     }
+
 
     /**
      * Handles the clockOut button click event.
@@ -130,11 +141,13 @@ public class HomeView extends VerticalLayout {
             Notification notification = new Notification("Clocked out at: " + formattedDateTime);
             notification.open();
             notification.setPosition(Notification.Position.TOP_CENTER);
-            notification.setDuration(10000); // Set duration to 10 seconds
+            notification.setDuration(5000); // Set duration to 5 seconds
 
             updateButtonStates();
             timeEntryGrid.getDataProvider().refreshAll();
             displayRemainingWorkTime();
+
+            startUpdateTask(); // Start the task to update remaining time
         } else {
             Notification notification = new Notification("Invalid time entry!");
             notification.open();
@@ -185,7 +198,7 @@ public class HomeView extends VerticalLayout {
             LocalDateTime clockInTime = LocalDateTime.parse(lastEntry.getTimestamp(), DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
             LocalDateTime clockOutTime = currentTime;
 
-            long workMinutes = java.time.Duration.between(clockInTime, clockOutTime).toMinutes();
+            long workMinutes = Duration.between(clockInTime, clockOutTime).toMinutes();
             long remainingMinutes = 480 - workMinutes; // Assuming 8-hour workday (8 hours = 480 minutes)
 
             long remainingHours = remainingMinutes / 60;
@@ -197,5 +210,33 @@ public class HomeView extends VerticalLayout {
         } else {
             remainingHoursLabel.setText("");
         }
+    }
+
+    /**
+     * Starts a scheduled task to update the remaining work time display every minute.
+     */
+    private void startUpdateTask() {
+        stopUpdateTask(); // Stop the previous task if running
+
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(this::displayRemainingWorkTime, 0, 1, TimeUnit.MINUTES);
+    }
+
+    /**
+     * Stops the scheduled task for updating the remaining work time.
+     */
+    private void stopUpdateTask() {
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
+    }
+
+    /**
+     * Clean up resources when the view is detached.
+     */
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        super.onDetach(detachEvent);
+        stopUpdateTask();
     }
 }
