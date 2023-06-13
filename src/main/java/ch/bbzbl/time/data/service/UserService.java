@@ -1,5 +1,6 @@
 package ch.bbzbl.time.data.service;
 
+import ch.bbzbl.time.data.Repository.UserRepository;
 import ch.bbzbl.time.data.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

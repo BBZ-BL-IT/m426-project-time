@@ -1,7 +1,7 @@
 package ch.bbzbl.time.security;
 
 import ch.bbzbl.time.data.entity.User;
-import ch.bbzbl.time.data.service.UserRepository;
+import ch.bbzbl.time.data.Repository.UserRepository;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 
 import java.util.Optional;

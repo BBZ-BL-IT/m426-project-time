@@ -1,6 +1,6 @@
 package ch.bbzbl.time;
 
-import ch.bbzbl.time.data.service.SamplePersonRepository;
+import ch.bbzbl.time.data.Repository.SamplePersonRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
 import javax.sql.DataSource;

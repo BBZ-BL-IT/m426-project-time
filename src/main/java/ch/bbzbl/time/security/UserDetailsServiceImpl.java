@@ -1,7 +1,7 @@
 package ch.bbzbl.time.security;
 
 import ch.bbzbl.time.data.entity.User;
-import ch.bbzbl.time.data.service.UserRepository;
+import ch.bbzbl.time.data.Repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

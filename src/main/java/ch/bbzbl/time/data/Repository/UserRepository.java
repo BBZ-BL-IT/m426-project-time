@@ -1,4 +1,4 @@
-package ch.bbzbl.time.data.service;
+package ch.bbzbl.time.data.Repository;
 
 import ch.bbzbl.time.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
